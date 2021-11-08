@@ -1686,7 +1686,7 @@ abstract contract ERC20VotesComp is ERC20Votes {
     }
 }
 
-// File: contracts/Token/vMMN.sol
+// File: contracts/vMMN.sol
 
 
 

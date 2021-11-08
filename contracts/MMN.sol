@@ -1057,7 +1057,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     ) internal virtual {}
 }
 
-// File: contracts/NFT/MMN.sol
+// File: contracts/MMN.sol
 
 
 
