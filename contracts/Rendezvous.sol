@@ -47,7 +47,7 @@ contract Rendezvous is Ownable {
     ///      |_ Cancle (3)
     ///      |_ Expired (2)
     ///
-    /// @param price_ of required MMN.
+    /// @param price_ of required vMMN.
     /// @param maxAmount_ of this NFT.
     /// @param startBlock_ of proposal.
     /// @param endBlock_ of proposal.
