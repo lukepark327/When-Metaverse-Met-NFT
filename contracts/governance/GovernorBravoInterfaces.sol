@@ -3,9 +3,11 @@
 pragma solidity ^0.8.0;
 
 /**
+ * Implementation for Solidity v0.8.
+ * 
  * References
  *
- * https://github.com/compound-finance/compound-protocol/blob/master/contracts/Governance/GovernorBravoInterfaces.sol
+ * - https://github.com/compound-finance/compound-protocol/blob/master/contracts/Governance/GovernorBravoInterfaces.sol
  */
 contract GovernorBravoEvents {
     /// @notice An event emitted when a new proposal is created
@@ -45,6 +47,12 @@ contract GovernorBravoEvents {
 
     /// @notice Emitted when pendingAdmin is accepted, which means admin is updated
     event NewAdmin(address oldAdmin, address newAdmin);
+
+    /// @notice Emitted when whitelist account expiration is set
+    event WhitelistAccountExpirationSet(address account, uint expiration);
+
+    /// @notice Emitted when the whitelistGuardian is set
+    event WhitelistGuardianSet(address oldGuardian, address newGuardian);
 }
 
 contract GovernorBravoDelegatorStorage {
@@ -167,6 +175,14 @@ contract GovernorBravoDelegateStorageV1 is GovernorBravoDelegatorStorage {
     }
 }
 
+contract GovernorBravoDelegateStorageV2 is GovernorBravoDelegateStorageV1 {
+    /// @notice Stores the expiration of account whitelist status as a timestamp
+    mapping (address => uint) public whitelistAccountExpirations;
+
+    /// @notice Address which manages whitelisted proposals and whitelist accounts
+    address public whitelistGuardian;
+}
+
 interface TimelockInterface {
     function delay() external view returns (uint);
     function GRACE_PERIOD() external view returns (uint);
@@ -179,9 +195,4 @@ interface TimelockInterface {
 
 interface CompInterface {
     function getPriorVotes(address account, uint blockNumber) external view returns (uint96);
-}
-
-interface GovernorAlpha {
-    /// @notice The total number of proposals
-    function proposalCount() external returns (uint);
 }

@@ -3,9 +3,11 @@
 pragma solidity ^0.8.0;
 
 /**
+ * Implementation for Solidity v0.8.
+ * 
  * References
  *
- * https://github.com/compound-finance/compound-protocol/blob/master/contracts/Timelock.sol
+ * - https://github.com/compound-finance/compound-protocol/blob/master/contracts/Timelock.sol
  */
 contract Timelock {
     event NewAdmin(address indexed newAdmin);
