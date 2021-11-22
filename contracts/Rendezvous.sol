@@ -3,17 +3,13 @@
 pragma solidity ^0.8.0;
 
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.3/contracts/access/Ownable.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.3/contracts/token/ERC20/IERC20.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.3.3/contracts/token/ERC20/utils/SafeERC20.sol";
-import "./MMN.sol";
+import "./MN.sol";
 import "./governance/vMMN.sol";
 
 /**
  * References
  */
 contract Rendezvous is Ownable {
-    using SafeERC20 for IERC20;
-
     MMN internal NFT;
     vMMN internal token;
     
