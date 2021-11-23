@@ -12,6 +12,32 @@
 - 스마트 컨트랙트로는 NFT증표 발행 및 관리를 위한 ‘NFT 컨트랙트’, 포인트 개념 구현을 위한 ‘토큰 컨트랙트’, 탈중앙화 환경에서 의사결정 및 집행을 위한 ‘DAO 컨트랙트’를 구현. 스마트 컨트랙트간 소통에는 제한이 없으므로 기능 확충이 용이함.
 - 메타버스의 아이템 및 아바타, SNS 서비스의 프로필 등 NFT를 활용할 수 있는 서비스들과 스마트 컨트랙트를 연동. 스마트 컨트랙트의 연동에는 제한이 없으므로 추후 다른 서비스로의 확장이 용이함.
 
+## Contracts
+
+### MMN
+
+NFT. TBA.
+
+### vMMV
+
+ERC20 token with some governance functionalities like voting, delegating, and so on. TBA.
+
+### GovernorBravo Series and Timelock
+
+Governance for DAO from Compound protocol.
+
+### Rendezvous
+
+- Propose new NFT.
+- Claim NFT with enough rights, that is, governance tokens.
+- Tagging whether NFT is used or not in real-world.
+
+### Giver
+
+- Propose new mission.
+- Claim governance tokens when you finish your mission.
+- Deposit needed.
+
 # User Scenario
 
 ![](./images/Fig2.png)
