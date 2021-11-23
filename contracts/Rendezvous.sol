@@ -29,6 +29,7 @@ contract Rendezvous is Ownable {
     
     event ProposalCreated(uint256 indexed proposalId, uint8 state, uint248 price, uint256 amount, uint256 maxAmount, uint256 startBlock, uint256 endBlock);
     event ProposalUpdated(uint256 indexed proposalId, uint8 state, uint248 price, uint256 amount, uint256 maxAmount, uint256 startBlock, uint256 endBlock);
+    event NftUsed(uint256 indexed tokenId, bool isUsed);
     
     constructor(
         MMN _NftAddr,
@@ -42,16 +43,15 @@ contract Rendezvous is Ownable {
     ///
     /// State:
     /// Pending (0)
-    ///   |_ Cancle (3)
-    ///   |_ Active (1)
-    ///      |_ Cancle (3)
-    ///      |_ Expired (2)
+    /// |_ Cancle (3)
+    /// |_ Active (1)
+    ///    |_ Expired (2)
     ///
     /// @param price_ of required vMMN.
     /// @param maxAmount_ of this NFT.
-    /// @param startBlock_ of proposal.
-    /// @param endBlock_ of proposal.
-    /// @return proposal's ID.
+    /// @param startBlock_ of the proposal.
+    /// @param endBlock_ of the proposal.
+    /// @return the proposal's ID.
     function propose(
         uint248 price_,
         uint256 maxAmount_,
@@ -88,17 +88,18 @@ contract Rendezvous is Ownable {
     
     function cancle(uint256 proposalId) public onlyOwner {
         Proposal memory p = _update(proposalId, 0);
-        require(p.state == 0 || p.state == 1, "Rendezvous: Cannot cancle already cancled or expired proposal.");
+        require(p.state == 0, "Rendezvous: Cannot cancle active proposal.");
         p.state = 3; // Cancle (3)
+
         proposals[proposalId] = p;
         
         emit ProposalUpdated(proposalId, p.state, p.price, p.amount, p.maxAmount, p.startBlock, p.endBlock);
     }
     
-    function _update(uint256 proposalId, uint256 amount) internal returns (Proposal memory){
+    function _update(uint256 proposalId, uint256 amount_) internal returns (Proposal memory){
         Proposal memory p = state(proposalId);
-        if (amount != 0) {
-            p.amount += amount;
+        if (amount_ != 0) {
+            p.amount += amount_;
             require(p.amount <= p.maxAmount, "Rendezvous: Cannot exceed max amount.");
         }
         proposals[proposalId] = p;
@@ -153,5 +154,7 @@ contract Rendezvous is Ownable {
     function use(uint256 tokenId) public onlyOwner {
         require(!isUsed[tokenId], "Rendezvous: Cannot use twice.");
         isUsed[tokenId] = true;
+
+        emit NftUsed(tokenId, true);
     }
 }
