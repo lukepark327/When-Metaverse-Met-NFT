@@ -21,14 +21,15 @@ contract Rendezvous is Ownable {
         uint256 startBlock;
         uint256 endBlock;
     }
-    uint256 public proposalCount;
     Proposal[] public proposals;
-    
+    bytes32[] public hashes;
+
     uint256 internal tokenCount;
     mapping (uint256 => bool) public isUsed;
     
     event ProposalCreated(uint256 indexed proposalId, uint8 state, uint248 price, uint256 amount, uint256 maxAmount, uint256 startBlock, uint256 endBlock);
     event ProposalUpdated(uint256 indexed proposalId, uint8 state, uint248 price, uint256 amount, uint256 maxAmount, uint256 startBlock, uint256 endBlock);
+    event HashUpdated(uint256 indexed proposalId, bytes32 hash);
     event NftUsed(uint256 indexed tokenId, bool isUsed);
     
     constructor(
@@ -38,7 +39,7 @@ contract Rendezvous is Ownable {
         NFT = _NftAddr;
         token = _tokenAddr;
     }
-    
+
     /// @dev Enroll NFT proposal by owner.
     ///
     /// State:
@@ -51,12 +52,14 @@ contract Rendezvous is Ownable {
     /// @param maxAmount_ of this NFT.
     /// @param startBlock_ of the proposal.
     /// @param endBlock_ of the proposal.
+    /// @param hash_ of the original digital asset.
     /// @return the proposal's ID.
     function propose(
         uint248 price_,
         uint256 maxAmount_,
         uint256 startBlock_,
-        uint256 endBlock_
+        uint256 endBlock_,
+        bytes32 hash_
     )
         public
         onlyOwner
@@ -66,19 +69,26 @@ contract Rendezvous is Ownable {
         require(endBlock_ > startBlock_, "Rendezvous: Invalid block number.");
         
         uint8 state_ = (startBlock_ <= block.number ? 1 : 0); // Active (1) or Pending (0)
-        proposals[proposalCount++] = Proposal({
+        proposals.push(Proposal({
            state: state_,
            price: price_,
            amount: 0,
            maxAmount: maxAmount_,
            startBlock: startBlock_,
            endBlock: endBlock_
-        });
-        
-        emit ProposalCreated(proposalCount, state_, price_, 0, maxAmount_, startBlock_, endBlock_);
-        return proposalCount;
+        }));
+        hashes.push(hash_);
+
+        emit ProposalCreated(proposals.length - 1, state_, price_, 0, maxAmount_, startBlock_, endBlock_);
+        emit HashUpdated(proposals.length - 1, hash_);
+        return proposals.length - 1;
     }
-    
+
+    function set(uint256 proposalId, bytes32 newHash) public onlyOwner {
+        hashes[proposalId] = newHash;
+        emit HashUpdated(proposalId, newHash);
+    }
+
     function activate(uint256 proposalId) public onlyOwner {
         Proposal memory p = _update(proposalId, 0);
         require(p.state == 1, "Rendezvous: Fail to activate.");
@@ -141,13 +151,13 @@ contract Rendezvous is Ownable {
         uint256 blockNumber_ = p.endBlock < block.number ? p.endBlock : block.number;
         uint256 price_ = uint256(p.price);
         require(
-            price_ <= token.getPriorVotes(msg.sender, blockNumber_),
+            price_ <= token.getPriorVotes(msg.sender, blockNumber_ - 1),
             "Rendezvous: Not enough tokens."
         );
 
         proposals[proposalId] = p;
 
-        NFT.mint(to, tokenCount++);
+        NFT.mint(to, tokenCount++, hashes[proposalId]);
     }
 
     /// @dev Use NFT for obtain real-world item, etc.
