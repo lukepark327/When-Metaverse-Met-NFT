@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 # from werkzeug.utils import secure_filename
 from Crypto.Hash import keccak
@@ -29,8 +29,16 @@ def upload():
     return jsonify({'hashed_key': hashed_key})
 
 
+@app.route('/download', methods=['POST'])
 def download():
-    pass
+    hashed_key = request.get_json()['hashed_key']
+
+    return send_file(
+        os.path.join('./data', hashed_key),
+        as_attachment=True,
+        attachment_filename=hashed_key+'.png',
+        mimetype='image/png'
+    )
 
 
 def remove():
