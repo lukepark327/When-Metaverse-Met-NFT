@@ -14,29 +14,32 @@
 
 ## Contracts
 
-### MMN
-
-NFT. TBA.
-
-### vMMV
-
-ERC20 token with some governance functionalities like voting, delegating, and so on. TBA.
-
-### GovernorBravo Series and Timelock
-
-Governance for DAO from Compound protocol.
-
-### Rendezvous
+### 👩‍❤️‍👨 Rendezvous
 
 - Propose new NFT.
 - Claim NFT with enough rights, that is, governance tokens.
 - Tagging whether NFT is used or not in real-world.
 
-### Giver
+### 🏦 Giver
 
 - Propose new mission.
 - Claim governance tokens when you finish your mission.
-- Deposit needed.
+- Deposit needed to prevent the abuse of tokens.
+
+### 🎨 MMN
+
+- ERC721 token.
+- *It will soon be replaced by ERC1155.*
+
+### 💵 vMMV
+
+- ERC20 token.
+- Provide some governance functionalities like voting, delegating, and so on.
+
+### 💬 GovernorBravo Series & Timelock
+
+- Governance for DAO.
+- Forked from Compound protocol.
 
 # User Scenario
 
@@ -51,6 +54,16 @@ Governance for DAO from Compound protocol.
 
 # Demo
 
-## NFT Minting
+![](./images/Demo.gif)
 
-![](./images/MMN_mint_demo.gif)
+- 친환경 활동 수행하기. 예시는 제페토 맵 'GREEN CAFE: 친환경 그린 카페'에서 촬영함.
+- NFT증표 요청하기(claim). NFT증표가 등록되어 있으며 제안이 활성화 상태(state: 1)여야 함.
+- 상응하는 아이템 아바타에 적용하기.
+
+## NFT증표 등록
+
+![](./images/Enroll.gif)
+
+* 이미지 서버에 업로드하기.
+* 이미지 서버에서 다운로드하기.
+* 업로드된 이미지를 이용해 NFT증표 제안 등록하기(propose).
